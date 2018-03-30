@@ -2,7 +2,7 @@ zed_cpu_ros
 ===========
 A simple zed camera driver which only use CPU and only publish left and right raw images and its camera info.
 
-# Useage:
+# Usage:
 1. git the packge into your working space
 
     ```
@@ -55,7 +55,7 @@ A simple zed camera driver which only use CPU and only publish left and right ra
 
  Parameter                    |           Description                                       |              Value
 ------------------------------|-------------------------------------------------------------|-------------------------
- device                   | device ID selection (if multiple cameras)                                      | int                             
+ device                   | device ID selection (if multiple cameras)                                      | int
  resolution                   | ZED Camera resolution                                       | '0': HD2K
  _                            | _                                                           | '1': HD1080
  _                            | _                                                           | '2': HD720
@@ -76,5 +76,5 @@ A simple zed camera driver which only use CPU and only publish left and right ra
 Patented articulated traction control ARTI technology for stair climbing and obstacle traversal without complex software or controls
 http://transcendrobotics.com/
 
-# Authour:
+# Author:
 Di Zeng
