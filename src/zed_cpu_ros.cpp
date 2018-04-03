@@ -24,17 +24,15 @@ class StereoCamera
 {
 
 public:
-
 	/**
 	 * @brief      { stereo camera driver }
 	 *
 	 * @param[in]  resolution  The resolution
 	 * @param[in]  frame_rate  The frame rate
 	 */
-	 StereoCamera(int device, int resolution, double frame_rate)
- : frame_rate_(30.0) {
+	 StereoCamera(int device_id, int resolution, double frame_rate):frame_rate_(30.0) {
 
-		camera_ = new cv::VideoCapture(device);
+		camera_ = new cv::VideoCapture(device_id);
 		cv::Mat raw;
 		cv::Mat left_image;
 		cv::Mat right_image;
@@ -136,10 +134,10 @@ public:
 		private_nh.param("right_frame_id", right_frame_id_, std::string("right_camera"));
 		private_nh.param("show_image", show_image_, false);
 		private_nh.param("load_zed_config", load_zed_config_, true);
-		private_nh.param("device", device_, 0);
+		private_nh.param("device_id", device_id_, 0);
 
 		ROS_INFO("Try to initialize the camera");
-		StereoCamera zed(device_, resolution_, frame_rate_);
+		StereoCamera zed(device_id_, resolution_, frame_rate_);
 		ROS_INFO("Initialized the camera");
 
 		// setup publisher stuff
@@ -383,7 +381,7 @@ public:
 	}
 
 private:
-	int device_, resolution_;
+	int device_id_, resolution_;
 	double frame_rate_;
 	bool show_image_, load_zed_config_;
 	double width_, height_;
