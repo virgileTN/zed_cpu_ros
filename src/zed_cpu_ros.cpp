@@ -136,6 +136,8 @@ public:
 		private_nh.param("load_zed_config", load_zed_config_, true);
 		private_nh.param("device_id", device_id_, 0);
 
+		correctFramerate(resolution_,frame_rate_);
+
 		ROS_INFO("Try to initialize the camera");
 		StereoCamera zed(device_id_, resolution_, frame_rate_);
 		ROS_INFO("Initialized the camera");
@@ -379,6 +381,25 @@ public:
 		cv_image.header.stamp = t;
 		img_pub.publish(cv_image.toImageMsg());
 	}
+	/**
+	 * @brief      Correct frame rate according to resolution
+	 *
+	 * @param[in]  resolution          The resolution
+	 * @param      frame_rate   			 The camera frame rate
+	 */
+	 void correctFramerate(int resolution, double &frame_rate){
+		 double max_frame_rate;
+		 std::string reso_str = "";
+		 switch (resolution) {
+ 			case 0: max_frame_rate = 15; reso_str = "2K"; break;
+ 			case 1: max_frame_rate = 30; reso_str = "FHD"; break;
+ 			case 2: max_frame_rate = 60; reso_str = "HD"; break;
+ 			case 3: max_frame_rate = 100; reso_str = "VGA"; break;
+ 		}
+		if(frame_rate > max_frame_rate)
+			ROS_WARN("frame_rate(%fHz) to high for resolution(%s), downgraded to %fHz",frame_rate,reso_str.c_str(),max_frame_rate);
+			frame_rate = max_frame_rate;
+	 }
 
 private:
 	int device_id_, resolution_;
