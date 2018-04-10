@@ -395,9 +395,10 @@ public:
  			case 1: max_frame_rate = 30; reso_str = "FHD"; break;
  			case 2: max_frame_rate = 60; reso_str = "HD"; break;
  			case 3: max_frame_rate = 100; reso_str = "VGA"; break;
+			default: ROS_FATAL("Unknow resolution passed"); return;
  		}
 		if(frame_rate > max_frame_rate)
-			ROS_WARN("frame_rate(%fHz) to high for resolution(%s), downgraded to %fHz",frame_rate,reso_str.c_str(),max_frame_rate);
+			ROS_WARN("frame_rate(%fHz) too high for resolution(%s), downgraded to %fHz",frame_rate,reso_str.c_str(),max_frame_rate);
 			frame_rate = max_frame_rate;
 	 }
 
