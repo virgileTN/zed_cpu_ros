@@ -135,6 +135,7 @@ public:
 		private_nh.param("show_image", show_image_, false);
 		private_nh.param("load_zed_config", load_zed_config_, true);
 		private_nh.param("device_id", device_id_, 0);
+		private_nh.param("encoding", encoding_, std::string("brg8"));
 
 		correctFramerate(resolution_,frame_rate_);
 
@@ -202,10 +203,10 @@ public:
 			}
 
 			if (left_image_pub.getNumSubscribers() > 0) {
-				publishImage(left_image, left_image_pub, "left_frame", now);
+				publishImage(left_image, left_image_pub, "left_frame", now, encoding_);
 			}
 			if (right_image_pub.getNumSubscribers() > 0) {
-				publishImage(right_image, right_image_pub, "right_frame", now);
+				publishImage(right_image, right_image_pub, "right_frame", now, encoding_);
 			}
 			if (left_cam_info_pub.getNumSubscribers() > 0) {
 				publishCamInfo(left_cam_info_pub, left_info, now);
@@ -372,11 +373,12 @@ public:
 	 * @param      img_pub       The image pub
 	 * @param[in]  img_frame_id  The image frame identifier
 	 * @param[in]  t             { parameter_description }
+	 * @param[in]  encoding      image_transport encoding
 	 */
-	void publishImage(cv::Mat img, image_transport::Publisher &img_pub, std::string img_frame_id, ros::Time t) {
+	void publishImage(cv::Mat img, image_transport::Publisher &img_pub, std::string img_frame_id, ros::Time t, const std::string& encoding) {
 		cv_bridge::CvImage cv_image;
 		cv_image.image = img;
-		cv_image.encoding = sensor_msgs::image_encodings::BGR8;
+		cv_image.encoding = encoding;
 		cv_image.header.frame_id = img_frame_id;
 		cv_image.header.stamp = t;
 		img_pub.publish(cv_image.toImageMsg());
@@ -409,6 +411,7 @@ private:
 	double width_, height_;
 	std::string left_frame_id_, right_frame_id_;
 	std::string config_file_location_;
+	std::string encoding_;
 };
 
 }
